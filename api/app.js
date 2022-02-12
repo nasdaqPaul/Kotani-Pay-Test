@@ -41,4 +41,8 @@ api.route('/login').post(loginValidator, async (req, res) => {
     }
 })
 
+
 api.listen(3000);
+
+//Export the app for testing
+module.exports = api
