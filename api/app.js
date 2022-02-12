@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const {collection, addDoc, query, where, getDocs} = require('firebase/firestore/lite');
 const bcrypt = require('bcrypt');
 const {userValidator, loginValidator} = require('./middleware/requestValidators');
+const validateAccessToken = require('./middleware/validateAccessToken');
 const jwtSecret = 'secrete_to_be_stored_in_env'
 
 const api = express();
@@ -19,7 +20,6 @@ api.route('/users').post(userValidator, async (req, res) => {
     res.status(201).end();
 })
 api.route('/login').post(loginValidator, async (req, res) => {
-    //TODO: Validate access token
     const q = query(UserCollection, where('email', '==', req.body.email))
     const users = await getDocs(q);
 
