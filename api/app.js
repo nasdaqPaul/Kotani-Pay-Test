@@ -34,10 +34,10 @@ api.route('/login').post(loginValidator, async (req, res) => {
             })
         }
         else {
-            res.status(400).end('Invalid email or password');
+            res.status(401).end('Invalid email or password');
         }
     }else {
-        res.status(400).end('Invalid email or password');
+        res.status(401).end('Invalid email or password');
     }
 })
 
