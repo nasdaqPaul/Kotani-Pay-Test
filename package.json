@@ -12,6 +12,7 @@
   "dependencies": {
     "bcrypt": "^5.0.1",
     "express": "^4.17.2",
-    "firebase": "^9.6.6"
+    "firebase": "^9.6.6",
+    "joi": "^17.6.0"
   }
 }

@@ -1,6 +1,7 @@
 const express = require('express');
 const {collection, addDoc, query, where, getDocs} = require('firebase/firestore/lite');
 const bcrypt = require('bcrypt');
+const {userValidator, loginValidator} = require('./middleware/requestValidators')
 
 const api = express();
 api.use(express.json());
@@ -8,19 +9,15 @@ api.use(express.json());
 const {db} = require('../firebase.js');
 const UserCollection = collection(db, 'Users');
 
-api.route('/users').post(async (req, res) => {
-    //TODO: Validate user data
-
+api.route('/users').post(userValidator, async (req, res) => {
     let passwordHash = await bcrypt.hash(req.body.password, 10);
 
     //TODO: implement validation for non-repeating email in db
     await addDoc(UserCollection, {... req.body, password: passwordHash});
     res.status(201).end();
 })
-api.route('/login').post(async (req, res) => {
-    //TODO: Validate user data
+api.route('/login').post(loginValidator, async (req, res) => {
     //TODO: Validate access token
-
     const q = query(UserCollection, where('email', '==', req.body.email))
     const users = await getDocs(q);
 
