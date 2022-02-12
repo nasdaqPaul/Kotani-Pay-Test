@@ -1,7 +1,9 @@
 const express = require('express');
+const jwt = require('jsonwebtoken');
 const {collection, addDoc, query, where, getDocs} = require('firebase/firestore/lite');
 const bcrypt = require('bcrypt');
-const {userValidator, loginValidator} = require('./middleware/requestValidators')
+const {userValidator, loginValidator} = require('./middleware/requestValidators');
+const jwtSecret = 'secrete_to_be_stored_in_env'
 
 const api = express();
 api.use(express.json());
@@ -23,10 +25,13 @@ api.route('/login').post(loginValidator, async (req, res) => {
 
     if(!users.empty){
         const user = users.docs[0].data();
-        console.log(user);
         if (await bcrypt.compare(req.body.password, user.password)){
-            //TODO: Generate JWT token
-            res.status(200).send('OK')
+            const accessToken = await jwt.sign({
+                email: user.emailAddress
+            }, jwtSecret)
+            res.status(200).json({
+                accessToken
+            })
         }
         else {
             res.status(400).end('Invalid email or password');
