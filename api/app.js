@@ -25,7 +25,7 @@ api.route('/login').post(async (req, res) => {
     const users = await getDocs(q);
 
     if(!users.empty){
-        const user = users.docs[1].data();
+        const user = users.docs[0].data();
         console.log(user);
         if (await bcrypt.compare(req.body.password, user.password)){
             //TODO: Generate JWT token
