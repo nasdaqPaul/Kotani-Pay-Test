@@ -19,6 +19,7 @@ api.route('/users').post(async (req, res) => {
 })
 api.route('/login').post(async (req, res) => {
     //TODO: Validate user data
+    //TODO: Validate access token
 
     const q = query(UserCollection, where('email', '==', req.body.email))
     const users = await getDocs(q);
